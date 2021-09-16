@@ -1,0 +1,34 @@
+import { useState } from 'react'
+import { FloatMessage } from '.'
+
+export default function ApyFloatMessage({ apy, info }) {
+  const [anchorEl, setAnchorEl] = useState(null)
+  return (
+    <div
+      style={{
+        margin: '10px 0',
+        fontFamily: 'Frutiger',
+        fontSize: '14px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        color: '#FFF6F2',
+      }}
+    >
+      <span>APY : {apy}%</span>
+      <span
+        style={{
+          fontFamily: 'Material Icons Outlined',
+          fontSize: '16px',
+          marginLeft: '5px',
+          color: '#B2B2B2',
+        }}
+        onMouseEnter={(e) => setAnchorEl(e.currentTarget)}
+        onMouseLeave={() => setAnchorEl(null)}
+      >
+        info
+      </span>
+      <FloatMessage {...{ anchorEl, info }} />
+    </div>
+  )
+}
