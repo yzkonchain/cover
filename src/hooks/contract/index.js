@@ -33,19 +33,6 @@ const calc_apy_basic = ([sx, sy, sk], [bond, want], swap_sqp) => {
 }
 const calc_apy = ({ swap: { sx, sy, sk } }, [bond, want], { swap_sqp, expiry_time }) =>
   (format(calc_apy_basic([sx, sy, sk], [bond, want], swap_sqp)) * 3155692600000) / (expiry_time * 1000 - new Date())
-const calc_apy_format = ([sx, sy, sk], { swap_sqp, expiry_time }, time) => {
-  const basic = sk == 0 ? 0 : (sx + sk) / (sy + (sk * swap_sqp) / 1000000000) - 1
-  return (basic * 3155692600000) / (expiry_time * 1000 - (time || new Date()))
-}
-
-const calc_slip = ({ swap: { sx, sy, sk } }, [bond, want], { swap_sqp, expiry_time }) =>
-  (format(
-    calc_apy_basic([sx, sy, sk], [bond, want], swap_sqp).sub(calc_apy_basic([sx, sy, sk], [null, null], swap_sqp)),
-  ) *
-    3155692600000) /
-  (expiry_time * 1000 - new Date())
-
-// calc_apy_format([40000, 80000, 0], { swap_sqp, expiry_time }, time)
 
 export default function contract() {
   const { enqueueSnackbar } = useSnackbar()
@@ -86,7 +73,6 @@ export default function contract() {
   }
   return {
     calc_apy,
-    calc_slip,
     notify,
     async fetch_state(pool) {
       const init = { balance: {}, allowance: {}, swap: {} }
@@ -101,6 +87,7 @@ export default function contract() {
         init.swap.sx,
         init.swap.sy,
         init.swap.sk,
+        init.swap_sqp,
       ] = await Promise.all([
         me ? pool.bond.ct.balanceOf(me) : ZERO,
         me ? pool.want.ct.balanceOf(me) : ZERO,
@@ -111,11 +98,12 @@ export default function contract() {
         pool.ct.sx(),
         pool.ct.sy(),
         pool.ct.sk(),
+        pool.ct.swap_sqp(),
       ])
-      init.swap.sx = unformat(30000)
-      init.swap.sy = unformat(80000)
-      // console.log(format(init.swap.sx), format(init.swap.sy), format(init.swap.sk))
-      init.apy = calc_apy(init, [null, null], pool)
+      init.apy = calc_apy(init, [null, null], {
+        swap_sqp: ethers.utils.formatUnits(init.swap_sqp, 0),
+        expiry_time: pool.expiry_time,
+      })
       return init
     },
     async approve(token, pool) {

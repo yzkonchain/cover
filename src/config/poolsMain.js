@@ -1,38 +1,39 @@
 import { USDT, USDC } from '@/assets/svg/token'
+import COVER from '@/assets/svg/token/COVER.png'
+import { ethers } from 'ethers'
 import { Token, Pool } from './makePool'
 
 var tokenList = {},
   pools = []
 
 const poolConfig = {
-  network: 'ropsten',
-  chainid: 3,
+  network: 'homestead',
+  chainid: 1,
   infuraid: '9180c5a422ac44f9b21ad7927b6b662c',
+  collar: '0x11facD2B150caDD5322AeB62219cBF9A3cF8Da79',
+  browser: 'https://etherscan.io',
+  gasAdjustment: 150,
   factory: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
   pricePool: '0x5BBBE4Da8b5AF36482F75747Ee38ddFDf3F6e4D9',
-  collar: '0xe405bD3C4876D1Ea0af92BaCF5831c9FCbDD78aE',
   stablecoin: '0x08f5F253fb2080660e9a4E3882Ef4458daCd52b0',
-  browser: 'https://etherscan.io',
-  gasAdjustment: 120,
 }
 
 tokenList = {
-  ...Token('COLLAR', poolConfig.collar),
   ...Token('SWAP', poolConfig.pricePool),
-  ...Token('USDC', '0x67C9a0830d922C80A96408EEdF606c528836880C', USDC),
-  ...Token('yzkUSC', '0xF3d7FdB3395CeAba7856A273178f009389C6582d', USDT, 16),
+  ...Token('COLLAR', poolConfig.collar),
+  ...Token('COVER', '0x4688a8b1F292FDaB17E9a90c8Bc379dC1DBd8713', COVER),
 }
 
 pools = [
   Pool(
     {
-      bond: '0xF3d7FdB3395CeAba7856A273178f009389C6582d',
-      want: '0x67C9a0830d922C80A96408EEdF606c528836880C',
+      bond: '0x4688a8b1F292FDaB17E9a90c8Bc379dC1DBd8713',
+      want: '0x11facD2B150caDD5322AeB62219cBF9A3cF8Da79',
       r1: {
-        addr: '0xf7187fD2FE5E1d01f4C0e9dC91ccF96a2a93A931',
-        coll: '0xF9176bFDe0fDF7D8B9B57e668Fbd8E2cee3072E5',
-        call: '0x255E37fD5747F7fFF87B6BBb72F3A803F3556aB5',
-        expiry_time: 1633017600,
+        addr: '0x4663E439F07429a43CeCAe28523d7e51ad0bDebE',
+        coll: '0xC5fb11512E724941b8Ed28966459Ac8e9332507E',
+        call: '0xc8f6E9E7E3b106Bcc5f8c1Cf8Ab3dBC1D0a256c4',
+        expiry_time: 1696118400,
       },
     },
     tokenList,

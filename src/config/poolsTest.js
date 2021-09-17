@@ -18,10 +18,6 @@ const poolConfig = {
   gasAdjustment: 150,
 }
 
-// new ethers.Contract(poolConfig.factory, abi, signerNoAccount)
-//   .getPool(poolConfig.collar, poolConfig.stablecoin, 3000)
-//   .then((pricePool) => new ethers.Contract(pricePool, abi, signerNoAccount).slot0())
-
 tokenList = {
   ...Token('SWAP', poolConfig.pricePool),
   ...Token('COLLAR', poolConfig.collar),

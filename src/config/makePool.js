@@ -29,7 +29,8 @@ const Token = (symbol, addr, icon, decimals) => {
 const Pool = ({ bond, want, r1, r2 }, list) => {
   const r = [r1, r2].map((pool) => {
     if (pool) {
-      const { addr, coll, call, swap_sqp, expiry_time, symbol } = pool
+      const { addr, coll, call, expiry_time, symbol } = pool
+      const ct = new ethers.Contract(addr, abi, signerNoAccount)
       list[addr] = Token('CLPT', addr)[addr]
       list[coll] = Token('COLL', coll)[coll]
       list[call] = Token('CALL', call)[call]
@@ -40,10 +41,9 @@ const Pool = ({ bond, want, r1, r2 }, list) => {
         want: list[want],
         coll: list[coll],
         call: list[call],
-        swap_sqp: swap_sqp || 992187500,
         symbol: symbol || 'CLPT',
         icon: COLLAR,
-        ct: new ethers.Contract(addr, abi, signerNoAccount),
+        ct,
       }
     } else return null
   })
