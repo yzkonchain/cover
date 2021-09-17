@@ -29,16 +29,16 @@ var poolConfig = {},
   }
 
 switch (window.location.host) {
-  case 'app.collar.org':
-  case '127.0.0.1':
-    tokenList = tokenList_main
-    pools = pools_main
-    poolConfig = poolConfig_main
-    break
-  default:
+  case 'yzkonchain.github.io':
+  case 'localhost':
     tokenList = tokenList_test
     pools = pools_test
     poolConfig = poolConfig_test
+    break
+  default:
+    tokenList = tokenList_main
+    pools = pools_main
+    poolConfig = poolConfig_main
     break
 }
 
